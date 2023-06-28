@@ -1,12 +1,12 @@
 import { router } from './trpc';
-import { helloUserResolver, usersListResolver, userByNameResolver } from './routes/resolvers/users'
-import { createUserMutation } from './routes/mutations/users'
+import { usersListResolver, userByNameResolver } from './routes/resolvers/users'
+import { createUserMutation, updateUser } from './routes/mutations/users'
 import { onUpdateUserSubscription } from './routes/subscriptions/users'
 
 export const appRouter = router({
-        helloUser: helloUserResolver,
         usersList: usersListResolver,
-        changeFirstUser: createUserMutation,
+        createUserMutation: createUserMutation,
+        updateUser: updateUser,
         onUpadateUser: onUpdateUserSubscription,
         userByName: userByNameResolver
     }

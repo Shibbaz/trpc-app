@@ -1,25 +1,18 @@
 import { publicProcedure } from '../../trpc';
 import { z } from 'zod'
-import { usersDataSource } from '../../models/users/dataSource'
+import { prisma } from '../../db'
 
 export const usersListResolver = publicProcedure.query(async() => {
-    return usersDataSource
+    return await prisma.user.findMany()
 })
 
 export const userByNameResolver = publicProcedure.input(
     z.object({
         name: z.string().nullish(),
     })
-).query(({ input }:any) => {
-    let obj = usersDataSource.find(o => o.name === input.name);
-
-    return obj;
+).query(async ({ input }:any) => {
+    const user = await prisma.user.findMany({
+        where: input,
+      })
+    return user;
 })
-export const helloUserResolver = publicProcedure.input(
-    z.object({
-      text: z.string().nullish(),
-    })).query(({ input }:any) => {
-        return {
-            text: `Hello ${ input.text }`
-        }
-    })

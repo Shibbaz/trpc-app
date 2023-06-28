@@ -1,7 +1,7 @@
 import { observable } from '@trpc/server/observable';
 import { publicProcedure } from '../../trpc';
-import { usersDataSource } from '../../models/users/dataSource'
 import { z } from 'zod'
+import { prisma } from '../../db'
 
 export const onUpdateUserSubscription = publicProcedure.input(
     z.object({
@@ -10,8 +10,11 @@ export const onUpdateUserSubscription = publicProcedure.input(
 ).subscription(({input}:any)=> {
     return observable<{data: any}>((emit) => {
         const id = input.id
+        const user = prisma.user.findUnique({
+            where: input,
+          })
         emit.next({data: {
-            name: usersDataSource[id].name
+            id: id
         }});
     }
     )
