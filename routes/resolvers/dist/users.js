@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.helloUserResolver = exports.usersListResolver = void 0;
+exports.helloUserResolver = exports.userByNameResolver = exports.usersListResolver = void 0;
 var trpc_1 = require("../../trpc");
 var zod_1 = require("zod");
 var dataSource_1 = require("../../models/users/dataSource");
@@ -45,6 +45,13 @@ exports.usersListResolver = trpc_1.publicProcedure.query(function () { return __
         return [2 /*return*/, dataSource_1.usersDataSource];
     });
 }); });
+exports.userByNameResolver = trpc_1.publicProcedure.input(zod_1.z.object({
+    name: zod_1.z.string().nullish()
+})).query(function (_a) {
+    var input = _a.input;
+    var obj = dataSource_1.usersDataSource.find(function (o) { return o.name === input.name; });
+    return obj;
+});
 exports.helloUserResolver = trpc_1.publicProcedure.input(zod_1.z.object({
     text: zod_1.z.string().nullish()
 })).query(function (_a) {

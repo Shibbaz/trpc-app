@@ -23,6 +23,7 @@ const trpc = createTRPCProxyClient<AppRouter>({
   ],
 });
 async function main(){
+    const searched_obj = await trpc.userByName.query({name: "Kamil"})
     const changeUser = await trpc.changeFirstUser.mutate({text: "Shibbaz"})
     await new Promise<void>((resolve) => {
       const subscription = trpc.onUpadateUser.subscribe({id: 0}, {
