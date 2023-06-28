@@ -48,20 +48,22 @@ exports.updateUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware)
 })).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
+        var user;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     ee.emit('change', { name: input.name });
-                    return [4 /*yield*/, db_1.prisma.user.update({
-                            data: input || undefined,
-                            where: {
-                                id: input.id
-                            },
-                            select: {
-                                age: true,
-                                name: true
-                            }
-                        })];
+                    user = db_1.prisma.user.update({
+                        data: input || undefined,
+                        where: {
+                            id: input.id
+                        },
+                        select: {
+                            age: true,
+                            name: true
+                        }
+                    });
+                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
                 case 1: return [2 /*return*/, _b.sent()];
             }
         });
@@ -73,11 +75,14 @@ exports.createUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware)
 })).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
+        var user;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, db_1.prisma.user.create({
+                case 0:
+                    user = db_1.prisma.user.create({
                         data: input || undefined
-                    })];
+                    });
+                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
                 case 1: return [2 /*return*/, _b.sent()];
             }
         });
@@ -88,13 +93,16 @@ exports.deleteUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware)
 })).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
+        var user;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, db_1.prisma.user["delete"]({
+                case 0:
+                    user = db_1.prisma.user["delete"]({
                         where: {
                             id: input.id
                         }
-                    })];
+                    });
+                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
                 case 1: return [2 /*return*/, _b.sent()];
             }
         });

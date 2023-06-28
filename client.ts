@@ -27,7 +27,7 @@ async function main(){
     console.log(userList)
     const createUserMutation = await trpc.createUser.mutate({name: "Shibbaz", age: 24})
     const changeUser = await trpc.updateUser.mutate({id: 1, name: "Kamil"})
-    const deleteUserMutation = await trpc.deleteUserById.mutate({id: 23})
+    const deleteUserMutation = await trpc.deleteUserById.mutate({id: 11})
     const subscription = await new Promise<void>((resolve) => {
       const subscription = trpc.onUpadateUser.subscribe({id: 22}, {
         onData(data): void {

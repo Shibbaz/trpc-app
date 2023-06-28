@@ -12,7 +12,7 @@ export const updateUserMutation = publicProcedure.use(loggerMiddleware).input(
     })
 ).mutation(async({ input }:any) => {
     ee.emit('change', {name: input.name});
-    return await prisma.user.update({
+    const user = prisma.user.update({
         data: input || undefined,
         where: {
             id: input.id
@@ -22,6 +22,7 @@ export const updateUserMutation = publicProcedure.use(loggerMiddleware).input(
             name: true,
           },
     })
+    return await prisma.$transaction([user])
 })
 
 export const createUserMutation = publicProcedure.use(loggerMiddleware).input(
@@ -30,9 +31,10 @@ export const createUserMutation = publicProcedure.use(loggerMiddleware).input(
         age: z.number().nullish()
     })
 ).mutation(async ({ input }:any) => {
-    return await prisma.user.create({
+    const user = prisma.user.create({
         data: input || undefined,
     })
+    return await prisma.$transaction([user])
 }
 )
 
@@ -41,9 +43,10 @@ export const deleteUserMutation = publicProcedure.use(loggerMiddleware).input(
         id: z.number(),
     })
 ).mutation(async({ input }:any) => {
-    return await prisma.user.delete({
+    const user = prisma.user.delete({
         where: {
             id: input.id
         },
     })
+    return await prisma.$transaction([user])
 })
