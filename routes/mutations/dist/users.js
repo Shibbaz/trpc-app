@@ -42,7 +42,7 @@ var zod_1 = require("zod");
 var events_1 = require("events");
 var db_1 = require("../../db");
 var ee = new events_1.EventEmitter();
-exports.updateUserMutation = trpc_1.publicProcedure.input(zod_1.z.object({
+exports.updateUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     id: zod_1.z.number(),
     name: zod_1.z.string().nullish()
 })).mutation(function (_a) {
@@ -67,7 +67,7 @@ exports.updateUserMutation = trpc_1.publicProcedure.input(zod_1.z.object({
         });
     });
 });
-exports.createUserMutation = trpc_1.publicProcedure.input(zod_1.z.object({
+exports.createUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     name: zod_1.z.string().nullish(),
     age: zod_1.z.number().nullish()
 })).mutation(function (_a) {
@@ -83,7 +83,7 @@ exports.createUserMutation = trpc_1.publicProcedure.input(zod_1.z.object({
         });
     });
 });
-exports.deleteUserMutation = trpc_1.publicProcedure.input(zod_1.z.object({
+exports.deleteUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     id: zod_1.z.number()
 })).mutation(function (_a) {
     var input = _a.input;

@@ -1,9 +1,9 @@
 import { observable } from '@trpc/server/observable';
-import { publicProcedure } from '../../trpc';
+import { publicProcedure, loggerMiddleware } from '../../trpc';
 import { z } from 'zod'
 import { prisma } from '../../db'
 
-export const onUpdateUserSubscription = publicProcedure.input(
+export const onUpdateUserSubscription = publicProcedure.use(loggerMiddleware).input(
     z.object({
         id: z.number().nullish(),
     })

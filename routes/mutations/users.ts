@@ -1,11 +1,11 @@
-import { publicProcedure } from '../../trpc';
+import { publicProcedure, loggerMiddleware } from '../../trpc';
 import {date, z} from 'zod'
 import { EventEmitter } from 'events';
 import { prisma } from '../../db'
 import { Prisma } from '@prisma/client'
 
 const ee = new EventEmitter();
-export const updateUserMutation = publicProcedure.input(
+export const updateUserMutation = publicProcedure.use(loggerMiddleware).input(
     z.object({
         id: z.number(),
         name: z.string().nullish(),
@@ -24,7 +24,7 @@ export const updateUserMutation = publicProcedure.input(
     })
 })
 
-export const createUserMutation = publicProcedure.input(
+export const createUserMutation = publicProcedure.use(loggerMiddleware).input(
     z.object({
         name: z.string().nullish(),
         age: z.number().nullish()
@@ -36,7 +36,7 @@ export const createUserMutation = publicProcedure.input(
 }
 )
 
-export const deleteUserMutation = publicProcedure.input(
+export const deleteUserMutation = publicProcedure.use(loggerMiddleware).input(
     z.object({
         id: z.number(),
     })

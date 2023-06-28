@@ -40,7 +40,7 @@ exports.userByNameResolver = exports.usersListResolver = void 0;
 var trpc_1 = require("../../trpc");
 var zod_1 = require("zod");
 var db_1 = require("../../db");
-exports.usersListResolver = trpc_1.publicProcedure.query(function () { return __awaiter(void 0, void 0, void 0, function () {
+exports.usersListResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).query(function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, db_1.prisma.user.findMany()];
@@ -48,7 +48,7 @@ exports.usersListResolver = trpc_1.publicProcedure.query(function () { return __
         }
     });
 }); });
-exports.userByNameResolver = trpc_1.publicProcedure.input(zod_1.z.object({
+exports.userByNameResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     name: zod_1.z.string().nullish()
 })).query(function (_a) {
     var input = _a.input;
