@@ -22,7 +22,6 @@ const trpc = createTRPCProxyClient<AppRouter>({
     }),
   ],
 });
-var count = 0;
 async function main(){
     const changeUser = await trpc.changeFirstUser.mutate({text: "Shibbaz"})
     await new Promise<void>((resolve) => {
