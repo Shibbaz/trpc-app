@@ -9,12 +9,11 @@ export const onUpdateUserSubscription = publicProcedure.input(
     })
 ).subscription(({input}:any)=> {
     return observable<{data: any}>((emit) => {
-        const id = input.id
         const user = prisma.user.findUnique({
             where: input,
           })
         emit.next({data: {
-            id: id
+            name: input.id
         }});
     }
     )

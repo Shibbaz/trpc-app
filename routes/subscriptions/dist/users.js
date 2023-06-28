@@ -10,12 +10,11 @@ exports.onUpdateUserSubscription = trpc_1.publicProcedure.input(zod_1.z.object({
 })).subscription(function (_a) {
     var input = _a.input;
     return observable_1.observable(function (emit) {
-        var id = input.id;
         var user = db_1.prisma.user.findUnique({
             where: input
         });
         emit.next({ data: {
-                id: id
+                name: input.id
             } });
     });
 });

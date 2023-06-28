@@ -2,9 +2,10 @@ import { publicProcedure } from '../../trpc';
 import {date, z} from 'zod'
 import { EventEmitter } from 'events';
 import { prisma } from '../../db'
+import { Prisma } from '@prisma/client'
 
 const ee = new EventEmitter();
-export const updateUser = publicProcedure.input(
+export const updateUserMutation = publicProcedure.input(
     z.object({
         id: z.number(),
         name: z.string().nullish(),
@@ -29,8 +30,20 @@ export const createUserMutation = publicProcedure.input(
         age: z.number().nullish()
     })
 ).mutation(async ({ input }:any) => {
-        return await prisma.user.create({
-            data: input || undefined,
-        })
-    }
+    return await prisma.user.create({
+        data: input || undefined,
+    })
+}
 )
+
+export const deleteUserMutation = publicProcedure.input(
+    z.object({
+        id: z.number(),
+    })
+).mutation(async({ input }:any) => {
+    return await prisma.user.delete({
+        where: {
+            id: input.id
+        },
+    })
+})
