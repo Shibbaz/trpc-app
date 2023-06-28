@@ -12,3 +12,5 @@ export const appRouter = router({
         deleteUserById: deleteUserMutation
     }
 );
+
+export type AppRouter = typeof appRouter;

@@ -9,6 +9,7 @@ export const updateUserMutation = publicProcedure.use(loggerMiddleware).input(
     z.object({
         id: z.number(),
         name: z.string().nullish(),
+        age: z.number().nullish()
     })
 ).mutation(async({ input }:any) => {
     ee.emit('change', {name: input.name});

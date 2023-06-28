@@ -44,7 +44,8 @@ var db_1 = require("../../db");
 var ee = new events_1.EventEmitter();
 exports.updateUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     id: zod_1.z.number(),
-    name: zod_1.z.string().nullish()
+    name: zod_1.z.string().nullish(),
+    age: zod_1.z.number().nullish()
 })).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
