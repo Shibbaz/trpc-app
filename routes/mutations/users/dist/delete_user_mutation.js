@@ -37,10 +37,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.deleteUserMutation = void 0;
-var trpc_1 = require("../../trpc");
+var trpc_1 = require("../../../trpc");
 var zod_1 = require("zod");
 var events_1 = require("events");
-var db_1 = require("../../db");
+var db_1 = require("../../../db");
 var ee = new events_1.EventEmitter();
 exports.deleteUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     id: zod_1.z.number()

@@ -15,6 +15,18 @@ model User {
   published Boolean  @default(false)
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  posts Post[]
   @@map("users")
+}
+
+model Post {
+  id       Int  @id @default(autoincrement())
+  title    String
+  description String
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int 
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("posts")
+
 }

@@ -36,28 +36,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.deleteUserMutation = void 0;
-var trpc_1 = require("../../trpc");
+exports.postsListResolver = void 0;
+var trpc_1 = require("../../../trpc");
 var zod_1 = require("zod");
-var events_1 = require("events");
-var db_1 = require("../../db");
-var ee = new events_1.EventEmitter();
-exports.deleteUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
-    id: zod_1.z.number()
-})).mutation(function (_a) {
+var db_1 = require("../../../db");
+exports.postsListResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
+    pagination: zod_1.z.object({
+        page: zod_1.z.number().nullish(),
+        limit: zod_1.z.number().nullish()
+    })
+})).output(function (value) {
+    if (typeof value === 'object') {
+        return value;
+    }
+    throw new Error('Output is not a object');
+}).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var user;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    user = db_1.prisma.user["delete"]({
-                        where: {
-                            id: input.id
-                        }
-                    });
-                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
+                    if (!(input.pagination.page == null || input.pagination.limit == null)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, db_1.prisma.post.findMany()];
                 case 1: return [2 /*return*/, _b.sent()];
+                case 2: return [4 /*yield*/, db_1.prisma.post.findMany({
+                        skip: input.pagination.page * input.pagination.limit,
+                        take: input.pagination.limit
+                    })];
+                case 3: return [2 /*return*/, _b.sent()];
             }
         });
     });

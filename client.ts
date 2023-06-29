@@ -26,11 +26,21 @@ const trpc = createTRPCProxyClient<AppRouter>({
   ],
 });
 async function main(){
-    const userList = await trpc.users.usersList.query({page: 1, limit: 3})
+    const userList = await trpc.users.usersList.query({pagination: {page: 0, limit: 3}, include: {posts: true}})
     console.log(userList)
     const createUserMutation = await trpc.users.createUser.mutate({name: "Shibbaz", age: 30})
-    const changeUser = await trpc.users.updateUser.mutate({id: 189, name: "Kamil"})
-    const deleteUserMutation = await trpc.users.deleteUserById.mutate({id: 188})
+    const changeUser = await trpc.users.updateUser.mutate({id: 1, name: "Kamil"})
+    const user = await trpc.users.findUserById.query({id: 1, include: {posts: false}})
+    console.log(user);
+
+    const post = await trpc.posts.createPost.mutate({
+      title: "title",
+      description: "XDDDDDDD",
+      authorId: 1
+    })
+    const userWithPosts = await trpc.users.findUserById.query({id: 1, include: {posts: true}})
+
+    console.log(userWithPosts);
     const subscription = await new Promise<void>((resolve) => {
       const subscription = trpc.users.onUpadateUser.subscribe({id: 189}, {
         onData(data): void {

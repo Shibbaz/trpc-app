@@ -36,27 +36,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.deleteUserMutation = void 0;
-var trpc_1 = require("../../trpc");
+exports.createPostMutation = void 0;
+var trpc_1 = require("../../../trpc");
 var zod_1 = require("zod");
 var events_1 = require("events");
-var db_1 = require("../../db");
+var db_1 = require("../../../db");
 var ee = new events_1.EventEmitter();
-exports.deleteUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
-    id: zod_1.z.number()
+exports.createPostMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
+    title: zod_1.z.string(),
+    description: zod_1.z.string().nullish(),
+    authorId: zod_1.z.number()
 })).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var user;
+        var post;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    user = db_1.prisma.user["delete"]({
-                        where: {
-                            id: input.id
-                        }
+                    post = db_1.prisma.post.create({
+                        data: input || undefined
                     });
-                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
+                    return [4 /*yield*/, db_1.prisma.$transaction([post])];
                 case 1: return [2 /*return*/, _b.sent()];
             }
         });

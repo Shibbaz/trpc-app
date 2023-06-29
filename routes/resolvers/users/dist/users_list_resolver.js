@@ -37,10 +37,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.usersListResolver = void 0;
-var trpc_1 = require("../../trpc");
-var user_data_source_1 = require("../../user_data_source");
-exports.usersListResolver = trpc_1.publicProcedure.query(function () { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/, user_data_source_1.users];
+var trpc_1 = require("../../../trpc");
+var zod_1 = require("zod");
+var db_1 = require("../../../db");
+exports.usersListResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
+    pagination: zod_1.z.object({
+        page: zod_1.z.number().nullish(),
+        limit: zod_1.z.number().nullish()
+    }),
+    include: zod_1.z.object({
+        posts: zod_1.z.boolean({
+            invalid_type_error: "posts must be a boolean"
+        })
+    })
+})).output(function (value) {
+    if (typeof value === 'object') {
+        return value;
+    }
+    throw new Error('Output is not a object');
+}).query(function (_a) {
+    var input = _a.input;
+    return __awaiter(void 0, void 0, void 0, function () {
+        var users, users;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!(input.pagination.page == null || input.pagination.limit == null)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, db_1.prisma.user.findMany({
+                            include: {
+                                posts: true
+                            }
+                        })];
+                case 1:
+                    users = _b.sent();
+                    return [2 /*return*/, users];
+                case 2: return [4 /*yield*/, db_1.prisma.user.findMany({
+                        include: {
+                            posts: input.include.posts
+                        },
+                        skip: input.pagination.page * input.pagination.limit,
+                        take: input.pagination.limit
+                    })];
+                case 3:
+                    users = _b.sent();
+                    return [2 /*return*/, users];
+            }
+        });
     });
-}); });
+});
