@@ -43,7 +43,12 @@ var db_1 = require("../../db");
 exports.usersListResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     page: zod_1.z.number().nullish(),
     limit: zod_1.z.number().nullish()
-})).query(function (_a) {
+})).output(function (value) {
+    if (typeof value === 'object') {
+        return value;
+    }
+    throw new Error('Output is not a object');
+}).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_b) {
@@ -63,7 +68,12 @@ exports.usersListResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).
 });
 exports.userByNameResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
     name: zod_1.z.string().nullish()
-})).query(function (_a) {
+})).output(function (value) {
+    if (typeof value === 'object') {
+        return value;
+    }
+    throw new Error('Output is not a object');
+}).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
         var user;
