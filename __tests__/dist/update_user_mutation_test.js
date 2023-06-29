@@ -37,12 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var globals_1 = require("@jest/globals");
-var router_1 = require("../router");
+var app_router_1 = require("../routers/app_router");
 var jest_mock_1 = require("jest-mock");
 var db_1 = require("../db");
 describe("update User Mutation", function () {
     var mockedPrismaService = jest_mock_1.mocked(db_1.prisma);
-    var caller = router_1.appRouter.createCaller({ session: null, prisma: mockedPrismaService });
+    var caller = app_router_1.appRouter.createCaller({ session: null, prisma: mockedPrismaService });
     globals_1.test("createUser", function () { return __awaiter(void 0, void 0, void 0, function () {
         var createInput, createdUserResult, input, result;
         return __generator(this, function (_a) {
@@ -52,7 +52,7 @@ describe("update User Mutation", function () {
                         name: "kamil",
                         age: 24
                     };
-                    return [4 /*yield*/, caller.createUser(createInput)];
+                    return [4 /*yield*/, caller.users.createUser(createInput)];
                 case 1:
                     createdUserResult = _a.sent();
                     globals_1.expect(createdUserResult[0]["age"]).toBe(24);
@@ -62,7 +62,7 @@ describe("update User Mutation", function () {
                         name: "shibbaz",
                         age: 24
                     };
-                    return [4 /*yield*/, caller.updateUser(input)];
+                    return [4 /*yield*/, caller.users.updateUser(input)];
                 case 2:
                     result = _a.sent();
                     globals_1.expect(result[0]["age"]).toBe(24);
