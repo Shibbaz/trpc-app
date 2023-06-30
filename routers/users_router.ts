@@ -4,7 +4,7 @@ import { createUserMutation } from "../routes/mutations/users/create_user_mutati
 import { usersListResolver  } from "../routes/resolvers/users/users_list_resolver"
 import { findUserByIdResolver } from "../routes/resolvers/users/find_user_by_id_resolver"
 import { onUpdateUserSubscription } from "../routes/subscriptions/users/on_update_user_subscription"
-import { router } from '../trpc';
+import { router } from '../libs/config/initializers/trpc';
 
 export const usersRouter = router({
     usersList: usersListResolver,

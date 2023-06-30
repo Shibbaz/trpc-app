@@ -1,4 +1,4 @@
-import { router } from '../trpc';
+import { router } from '../libs/config/initializers/trpc';
 import { usersRouter } from './users_router';
 import { postsRouter } from './posts_router'
 export const appRouter = router({

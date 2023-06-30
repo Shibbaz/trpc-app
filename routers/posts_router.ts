@@ -4,7 +4,7 @@ import { updatePostMutation } from "../routes/mutations/posts/update_post_mutati
 import { postByTitleResolver } from "../routes/resolvers/posts/post_by_title_resolver"
 import { postsListResolver } from "../routes/resolvers/posts/posts_lists_resolver"
 import { onUpdatePostSubscription } from "../routes/subscriptions/posts/on_update_post_subscription"
-import { router } from '../trpc';
+import { router } from '../libs/config/initializers/trpc';
 
 export const postsRouter = router({
     postsList: postsListResolver,

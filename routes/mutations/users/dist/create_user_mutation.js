@@ -38,26 +38,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.createUserMutation = void 0;
 var trpc_1 = require("../../../trpc");
-var zod_1 = require("zod");
 var events_1 = require("events");
-var db_1 = require("../../../db");
+var inputs_1 = require("./resources/inputs");
+var model_1 = require("../../../models/users/model");
 var ee = new events_1.EventEmitter();
-exports.createUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
-    name: zod_1.z.string().nullish(),
-    age: zod_1.z.number().nullish()
-})).mutation(function (_a) {
+exports.createUserMutation = trpc_1.Procedure.input(inputs_1.createUserInput).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var user;
         return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    user = db_1.prisma.user.create({
-                        data: input || undefined
-                    });
-                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
-                case 1: return [2 /*return*/, _b.sent()];
-            }
+            return [2 /*return*/, new model_1.User().create(input)];
         });
     });
 });

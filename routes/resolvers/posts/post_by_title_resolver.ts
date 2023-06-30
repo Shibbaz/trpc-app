@@ -1,19 +1,13 @@
-import { publicProcedure, loggerMiddleware } from '../../../trpc';
-import { z } from 'zod'
-import { prisma } from '../../../db'
+import { Procedure } from '../../../libs/config/initializers/trpc';
+import {throwError} from '../../../libs/helpers'
+import { postByTitleResolverInput } from './resources/post_input'
+import { Post } from '../../../models/posts/model'
 
-export const postByTitleResolver = publicProcedure.use(loggerMiddleware).input(
-    z.object({
-        title: z.string().nullish(),
-    })
+export const postByTitleResolver = Procedure.input(
+  postByTitleResolverInput
 ).output((value): any => {
-    if (typeof value === 'object') {
-      return value;
-    }
-    throw new Error('Output is not a object');
+    throwError
   }).query(async ({ input }:any) => {
-    const post = await prisma.post.findMany({
-        where: input,
-      })
-    return post;
+    return new Post().find_by(input)
+
 })

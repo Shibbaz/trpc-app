@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client'
-export const prisma = new PrismaClient()
 const { createPrismaRedisCache } = require("prisma-redis-middleware");
 import Redis from "ioredis";
 
 const redis = new Redis(); // Uses default options for Redis connection
 
-const cacheMiddleware:any = createPrismaRedisCache({
+export const cacheMiddleware:any = createPrismaRedisCache({
   models: [
     { model: "User", cacheTime: 60, cacheKey: "users", log: console },
   ],
@@ -27,4 +25,3 @@ const cacheMiddleware:any = createPrismaRedisCache({
   },
 });
 
-prisma.$use(cacheMiddleware);

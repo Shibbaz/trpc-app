@@ -12,7 +12,6 @@ model User {
   id        Int @id @default(autoincrement())
   name     String
   age      Int
-  published Boolean  @default(false)
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts Post[]

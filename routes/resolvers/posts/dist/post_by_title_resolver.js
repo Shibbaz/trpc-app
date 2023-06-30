@@ -38,28 +38,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.postByTitleResolver = void 0;
 var trpc_1 = require("../../../trpc");
-var zod_1 = require("zod");
-var db_1 = require("../../../db");
-exports.postByTitleResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
-    title: zod_1.z.string().nullish()
-})).output(function (value) {
-    if (typeof value === 'object') {
-        return value;
-    }
-    throw new Error('Output is not a object');
+var helpers_1 = require("../../../libs/helpers");
+var post_input_1 = require("./resources/post_input");
+var model_1 = require("../../../models/posts/model");
+exports.postByTitleResolver = trpc_1.Procedure.input(post_input_1.postByTitleResolverInput).output(function (value) {
+    helpers_1.throwError;
 }).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var post;
         return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, db_1.prisma.post.findMany({
-                        where: input
-                    })];
-                case 1:
-                    post = _b.sent();
-                    return [2 /*return*/, post];
-            }
+            return [2 /*return*/, new model_1.Post().find_by(input)];
         });
     });
 });

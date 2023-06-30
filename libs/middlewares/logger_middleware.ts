@@ -1,13 +1,4 @@
-import { TRPCError, initTRPC } from '@trpc/server';
-import superjson from 'superjson';
-export const t = initTRPC.create({
-  transformer: superjson,
-});
-export const middleware = t.middleware;
-export const router = t.router;
-export const publicProcedure = t.procedure;
-
-
+import {middleware} from '../config/initializers/trpc'
 export const loggerMiddleware = middleware(async (opts) => {
     const start = Date.now();
    
@@ -21,5 +12,4 @@ export const loggerMiddleware = middleware(async (opts) => {
       : console.error('Non-OK request timing', meta);
    
     return result;
-  });
-   
+});

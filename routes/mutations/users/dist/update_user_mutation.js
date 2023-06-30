@@ -37,36 +37,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.updateUserMutation = void 0;
-var trpc_1 = require("../../../trpc");
+var trpc_1 = require("../../../libs/config/initializers/trpc");
 var zod_1 = require("zod");
 var events_1 = require("events");
-var db_1 = require("../../../db");
+var model_1 = require("../../../models/users/model");
 var ee = new events_1.EventEmitter();
-exports.updateUserMutation = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
+exports.updateUserMutation = trpc_1.Procedure.input(zod_1.z.object({
     id: zod_1.z.number(),
     name: zod_1.z.string().nullish(),
     age: zod_1.z.number().nullish()
 })).mutation(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var user;
         return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    ee.emit('change', { name: input.name });
-                    user = db_1.prisma.user.update({
-                        data: input || undefined,
-                        where: {
-                            id: input.id
-                        },
-                        select: {
-                            age: true,
-                            name: true
-                        }
-                    });
-                    return [4 /*yield*/, db_1.prisma.$transaction([user])];
-                case 1: return [2 /*return*/, _b.sent()];
-            }
+            ee.emit('change', { name: input.name });
+            return [2 /*return*/, new model_1.User().update(input, {
+                    age: true,
+                    name: true
+                })];
         });
     });
 });

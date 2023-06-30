@@ -37,40 +37,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.findUserByIdResolver = void 0;
-var trpc_1 = require("../../../trpc");
-var zod_1 = require("zod");
-var db_1 = require("../../../db");
-exports.findUserByIdResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
-    id: zod_1.z.number({
-        invalid_type_error: "id must be number"
-    }).nullish(),
-    include: zod_1.z.object({
-        posts: zod_1.z.boolean({
-            invalid_type_error: "posts must be a boolean"
-        })
-    })
-})).output(function (value) {
-    if (typeof value === 'object') {
-        return value;
-    }
-    throw new Error('Output is not a object');
+var trpc_1 = require("../../../libs/config/initializers/trpc");
+var user_input_1 = require("./resources/user_input");
+var model_1 = require("../../../models/users/model");
+var helpers_1 = require("../../../libs/helpers");
+exports.findUserByIdResolver = trpc_1.Procedure.input(user_input_1.singleUserResolverInput).output(function (value) {
+    helpers_1.throwError(value);
 }).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
         var user;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, db_1.prisma.user.findUnique({
-                        where: {
-                            id: input.id
-                        },
-                        include: {
-                            posts: input.include.posts
-                        }
-                    })];
-                case 1:
-                    user = _b.sent();
-                    return [2 /*return*/, user];
+                case 0:
+                    user = new model_1.User().find(input);
+                    return [4 /*yield*/, user];
+                case 1: return [2 /*return*/, _b.sent()];
             }
         });
     });

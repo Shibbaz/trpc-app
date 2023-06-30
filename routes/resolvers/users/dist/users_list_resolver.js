@@ -37,50 +37,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.usersListResolver = void 0;
-var trpc_1 = require("../../../trpc");
-var zod_1 = require("zod");
-var db_1 = require("../../../db");
-exports.usersListResolver = trpc_1.publicProcedure.use(trpc_1.loggerMiddleware).input(zod_1.z.object({
-    pagination: zod_1.z.object({
-        page: zod_1.z.number().nullish(),
-        limit: zod_1.z.number().nullish()
-    }),
-    include: zod_1.z.object({
-        posts: zod_1.z.boolean({
-            invalid_type_error: "posts must be a boolean"
-        })
-    })
-})).output(function (value) {
-    if (typeof value === 'object') {
-        return value;
-    }
-    throw new Error('Output is not a object');
+var trpc_1 = require("../../../libs/config/initializers/trpc");
+var user_input_1 = require("./resources/user_input");
+var model_1 = require("../../../models/users/model");
+var helpers_1 = require("../../../libs/helpers");
+exports.usersListResolver = trpc_1.Procedure.input(user_input_1.multipleUsersResolverInput).output(function (value) {
+    helpers_1.throwError(value);
 }).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var users, users;
+        var users;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (!(input.pagination.page == null || input.pagination.limit == null)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, db_1.prisma.user.findMany({
-                            include: {
-                                posts: true
-                            }
-                        })];
-                case 1:
-                    users = _b.sent();
-                    return [2 /*return*/, users];
-                case 2: return [4 /*yield*/, db_1.prisma.user.findMany({
-                        include: {
-                            posts: input.include.posts
-                        },
-                        skip: input.pagination.page * input.pagination.limit,
-                        take: input.pagination.limit
-                    })];
-                case 3:
-                    users = _b.sent();
-                    return [2 /*return*/, users];
+                    users = new model_1.User().where(input);
+                    return [4 /*yield*/, users];
+                case 1: return [2 /*return*/, _b.sent()];
             }
         });
     });

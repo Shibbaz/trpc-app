@@ -1,19 +1,10 @@
-import { publicProcedure, loggerMiddleware } from '../../../trpc';
-import { z} from 'zod'
+import { Procedure } from '../../../libs/config/initializers/trpc';
 import { EventEmitter } from 'events';
-import { prisma } from '../../../db'
-
+import { createUserInput } from './resources/inputs'
+import { User } from '../../../models/users/model'
 const ee = new EventEmitter();
 
-export const createUserMutation = publicProcedure.use(loggerMiddleware).input(
-    z.object({
-        name: z.string().nullish(),
-        age: z.number().nullish()
-    })
-).mutation(async ({ input }:any) => {
-    const user = prisma.user.create({
-        data: input || undefined,
-    })
-    return await prisma.$transaction([user])
-}
+export const createUserMutation = Procedure.input(createUserInput).mutation(async ({ input }:any) => {
+            return new User().create(input)
+        }
 )

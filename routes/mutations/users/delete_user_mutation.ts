@@ -1,20 +1,10 @@
-import { publicProcedure, loggerMiddleware } from '../../../trpc';
-import {date, z} from 'zod'
+import { Procedure } from '../../../libs/config/initializers/trpc';
 import { EventEmitter } from 'events';
-import { prisma } from '../../../db'
-import { Prisma } from '@prisma/client'
+import { User } from '../../../models/users/model';
+import {deleteUserInput } from './resources/inputs'
 
 const ee = new EventEmitter();
 
-export const deleteUserMutation = publicProcedure.use(loggerMiddleware).input(
-    z.object({
-        id: z.number(),
-    })
-).mutation(async({ input }:any) => {
-    const user = prisma.user.delete({
-        where: {
-            id: input.id
-        },
-    })
-    return await prisma.$transaction([user])
+export const deleteUserMutation = Procedure.input(deleteUserInput).mutation(async({ input }:any) => {
+    return new User().destroy(input)
 })

@@ -1,19 +1,10 @@
-import { publicProcedure, loggerMiddleware } from '../../../trpc';
-import {date, z} from 'zod'
+import { Procedure } from '../../../libs/config/initializers/trpc';
 import { EventEmitter } from 'events';
-import { prisma } from '../../../db'
-
+import { deletePostInput } from './resources/inputs'
 const ee = new EventEmitter();
+import { Post } from '../../../models/posts/model'
 
-export const deletePostMutation = publicProcedure.use(loggerMiddleware).input(
-    z.object({
-        id: z.number(),
-    })
-).mutation(async({ input }:any) => {
-    const user = prisma.post.delete({
-        where: {
-            id: input.id
-        },
-    })
-    return await prisma.$transaction([user])
+export const deletePostMutation = Procedure.input(deletePostInput).mutation(async({ input }:any) => {
+    return new Post().destroy(input)
+
 })

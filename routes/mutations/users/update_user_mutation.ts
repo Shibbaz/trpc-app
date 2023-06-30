@@ -1,10 +1,10 @@
-import { publicProcedure, loggerMiddleware } from '../../../trpc';
+import { Procedure } from '../../../libs/config/initializers/trpc';
 import { z} from 'zod'
 import { EventEmitter } from 'events';
-import { prisma } from '../../../db'
+import { User } from '../../../models/users/model';
 
 const ee = new EventEmitter();
-export const updateUserMutation = publicProcedure.use(loggerMiddleware).input(
+export const updateUserMutation = Procedure.input(
     z.object({
         id: z.number(),
         name: z.string().nullish(),
@@ -12,15 +12,12 @@ export const updateUserMutation = publicProcedure.use(loggerMiddleware).input(
     })
 ).mutation(async({ input }:any) => {
     ee.emit('change', {name: input.name});
-    const user = prisma.user.update({
-        data: input || undefined,
-        where: {
-            id: input.id
-        },
-        select: {
+    return new User().update(
+        input,
+        {
             age: true,
             name: true,
-          },
-    })
-    return await prisma.$transaction([user])
+        }
+    )
+
 })

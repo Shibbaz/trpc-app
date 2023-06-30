@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink, createWSClient, wsLink, loggerLink, splitLink } from '@trpc/client';
-import type { AppRouter } from './index';
+import type { AppRouter } from './server';
 import ws from 'ws';
 import superjson from 'superjson';
 
@@ -26,23 +26,29 @@ const trpc = createTRPCProxyClient<AppRouter>({
   ],
 });
 async function main(){
-    const userList = await trpc.users.usersList.query({pagination: {page: 0, limit: 3}, include: {posts: true}})
-    console.log(userList)
     const createUserMutation = await trpc.users.createUser.mutate({name: "Shibbaz", age: 30})
-    const changeUser = await trpc.users.updateUser.mutate({id: 1, name: "Kamil"})
-    const user = await trpc.users.findUserById.query({id: 1, include: {posts: false}})
-    console.log(user);
+    const changeUser = await trpc.users.updateUser.mutate({id: 167, name: "Kamil"})
+    const user = await trpc.users.findUserById.query({id: 167,
+      posts: {
+        select:{
+          id: true,
+          title: false,
+        },
+        skip: 1,
+        take: 10
+    }})
+    console.log(JSON.stringify(user));
 
     const post = await trpc.posts.createPost.mutate({
       title: "title",
       description: "XDDDDDDD",
-      authorId: 1
+      authorId: 167
     })
-    const userWithPosts = await trpc.users.findUserById.query({id: 1, include: {posts: true}})
+    const userWithPosts = await trpc.users.usersList.query({posts: {}})
 
     console.log(userWithPosts);
     const subscription = await new Promise<void>((resolve) => {
-      const subscription = trpc.users.onUpadateUser.subscribe({id: 189}, {
+      const subscription = trpc.users.onUpadateUser.subscribe({id: 167}, {
         onData(data): void {
           console.log("Updated ", data)
         },
