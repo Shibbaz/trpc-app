@@ -27,6 +27,7 @@ const trpc = createTRPCProxyClient<AppRouter>({
 async function main(){
     const createUserMutation = await trpc.users.createUser.mutate({name: "Shibbaz", age: 30})
     const changeUser = await trpc.users.updateUser.mutate({id: 167, name: "Kamil"})
+    console.log(changeUser)
     const user = await trpc.users.findUserById.query({id: 167,
       posts: {
         select:{

@@ -8,5 +8,5 @@ exports.t = server_1.initTRPC.create({
 });
 exports.middleware = exports.t.middleware;
 exports.router = exports.t.router;
-var logger_middleware_1 = require("../middlewares/logger_middleware");
+var logger_middleware_1 = require("../../middlewares/logger_middleware");
 exports.Procedure = exports.t.procedure.use(logger_middleware_1.loggerMiddleware);

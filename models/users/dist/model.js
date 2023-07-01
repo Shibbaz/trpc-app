@@ -124,24 +124,28 @@ var User = /** @class */ (function () {
     };
     User.prototype.where = function (input) {
         return __awaiter(this, void 0, void 0, function () {
+            var users_2, users;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!(input.posts == null)) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.dataSource.findMany({
                                 where: input.conditions,
-                                include: { posts: {} },
                                 take: input.take,
                                 skip: input.skip
                             })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        users_2 = _a.sent();
+                        return [2 /*return*/, users_2];
                     case 2: return [4 /*yield*/, this.dataSource.findMany({
                             where: input.conditions,
                             include: { posts: input.posts },
                             take: input.take,
                             skip: input.skip
                         })];
-                    case 3: return [2 /*return*/, _a.sent()];
+                    case 3:
+                        users = _a.sent();
+                        return [2 /*return*/, users];
                 }
             });
         });

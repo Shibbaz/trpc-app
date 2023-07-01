@@ -53,18 +53,19 @@ export class User{
 
     async where(input:any){
       if (input.posts == null){
-        return await this.dataSource.findMany({
+        const users = await this.dataSource.findMany({
           where: input.conditions, 
-          include: {posts: {}}, 
           take: input.take,
           skip: input.skip
         })
+        return users;
       }
-      return await this.dataSource.findMany({
+      const users = await this.dataSource.findMany({
         where: input.conditions, 
         include: {posts: input.posts}, 
         take: input.take,
         skip: input.skip
       })
+      return users;
     }
 }

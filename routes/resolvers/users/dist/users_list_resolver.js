@@ -46,13 +46,15 @@ exports.usersListResolver = trpc_1.Procedure.input(user_input_1.multipleUsersRes
 }).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var users;
+        var users, query;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    users = new model_1.User().where(input);
-                    return [4 /*yield*/, users];
-                case 1: return [2 /*return*/, _b.sent()];
+                    users = new model_1.User();
+                    return [4 /*yield*/, users.where(input)];
+                case 1:
+                    query = _b.sent();
+                    return [2 /*return*/, query];
             }
         });
     });
