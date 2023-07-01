@@ -11,7 +11,6 @@ const trpc = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     loggerLink(),
-    // call subscriptions through websockets and the rest over http
     splitLink({
       condition(op) {
         return op.type === 'subscription';
@@ -44,7 +43,14 @@ async function main(){
       description: "XDDDDDDD",
       authorId: 167
     })
-    const userWithPosts = await trpc.users.usersList.query({posts: {}})
+    const userWithPosts = await trpc.users.usersList.query({posts: {
+      select:{
+        id: true,
+        title: false,
+      },
+      skip: 1,
+      take: 10
+  }})
 
     console.log(userWithPosts);
     const subscription = await new Promise<void>((resolve) => {

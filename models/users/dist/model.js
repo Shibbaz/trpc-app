@@ -124,18 +124,23 @@ var User = /** @class */ (function () {
     };
     User.prototype.where = function (input) {
         return __awaiter(this, void 0, void 0, function () {
-            var paginationUsers;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        paginationUsers = {
-                            skip: input.skip,
-                            take: input.take
-                        };
                         if (!(input.posts == null)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.dataSource.findMany(input.conditions, { posts: {} }, paginationUsers)];
+                        return [4 /*yield*/, this.dataSource.findMany({
+                                where: input.conditions,
+                                include: { posts: {} },
+                                take: input.take,
+                                skip: input.skip
+                            })];
                     case 1: return [2 /*return*/, _a.sent()];
-                    case 2: return [4 /*yield*/, this.dataSource.findMany(input.conditions, { posts: input.posts }, paginationUsers)];
+                    case 2: return [4 /*yield*/, this.dataSource.findMany({
+                            where: input.conditions,
+                            include: { posts: input.posts },
+                            take: input.take,
+                            skip: input.skip
+                        })];
                     case 3: return [2 /*return*/, _a.sent()];
                 }
             });

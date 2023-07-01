@@ -52,13 +52,19 @@ export class User{
     }
 
     async where(input:any){
-      const paginationUsers = {
-        skip: input.skip,
-        take: input.take
-      }
       if (input.posts == null){
-        return await this.dataSource.findMany(input.conditions, {posts: {}}, paginationUsers)
+        return await this.dataSource.findMany({
+          where: input.conditions, 
+          include: {posts: {}}, 
+          take: input.take,
+          skip: input.skip
+        })
       }
-      return await this.dataSource.findMany(input.conditions, {posts: input.posts}, paginationUsers)
+      return await this.dataSource.findMany({
+        where: input.conditions, 
+        include: {posts: input.posts}, 
+        take: input.take,
+        skip: input.skip
+      })
     }
 }
