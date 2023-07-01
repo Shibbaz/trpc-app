@@ -46,14 +46,11 @@ exports.findUserByIdResolver = trpc_1.Procedure.input(user_input_1.singleUserRes
 }).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
-        var user;
+        var collection, query;
         return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    user = new model_1.User().find(input);
-                    return [4 /*yield*/, user];
-                case 1: return [2 /*return*/, _b.sent()];
-            }
+            collection = new model_1.User();
+            query = collection.find(input);
+            return [2 /*return*/, query];
         });
     });
 });

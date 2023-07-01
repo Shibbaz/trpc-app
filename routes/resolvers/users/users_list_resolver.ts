@@ -5,7 +5,7 @@ import {throwError} from '../../../libs/helpers'
 export const usersListResolver = Procedure.input(multipleUsersResolverInput).output((value) => {
   throwError(value)
 }).query(async ({ input }) => {
-  const users = new User()
-  const query = await users.where(input);
+  const collection = new User();
+  const query = collection.where(input);
   return query;
 })

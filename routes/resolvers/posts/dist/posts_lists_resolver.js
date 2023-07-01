@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.postsListResolver = void 0;
-var trpc_1 = require("../../../trpc");
+var trpc_1 = require("../../../libs/config/initializers/trpc");
 var post_input_1 = require("./resources/post_input");
 var helpers_1 = require("../../../libs/helpers");
 var model_1 = require("../../../models/posts/model");
@@ -46,8 +46,11 @@ exports.postsListResolver = trpc_1.Procedure.input(post_input_1.postListResolver
 }).query(function (_a) {
     var input = _a.input;
     return __awaiter(void 0, void 0, void 0, function () {
+        var collestion, query;
         return __generator(this, function (_b) {
-            return [2 /*return*/, new model_1.Post().where(input)];
+            collestion = new model_1.Post();
+            query = collestion.where(input);
+            return [2 /*return*/, query];
         });
     });
 });

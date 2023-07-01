@@ -7,5 +7,7 @@ export const postsListResolver = Procedure.input(
 ).output((value): any => {
   throwError
 }).query(async({ input }) => {
-  return new Post().where(input)
+  const collestion = new Post();
+  const query = collestion.where(input);
+  return query;
 })

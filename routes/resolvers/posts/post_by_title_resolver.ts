@@ -8,6 +8,8 @@ export const postByTitleResolver = Procedure.input(
 ).output((value): any => {
     throwError
   }).query(async ({ input }:any) => {
-    return new Post().find_by(input)
+    const collestion = new Post();
+    const query = collestion.find_by(input);
+    return query;
 
 })

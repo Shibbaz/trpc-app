@@ -5,6 +5,7 @@ import {throwError} from '../../../libs/helpers'
 export const findUserByIdResolver = Procedure.input(singleUserResolverInput).output((value): any => {
   throwError(value)
 }).query(async ({ input }:any) => {
-  const user = new User().find(input)
-  return await user;
+  const collection = new User();
+  const query = collection.find(input);
+  return query;
 })
